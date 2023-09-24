@@ -4,9 +4,14 @@
 
 
 from faker import Faker
+from pathlib import Path
 import numpy as np
 import matplotlib as plt
 import pandas as pd
+import json
+import pprint
+
+
 
 fake = Faker()
 
@@ -20,8 +25,23 @@ def fakeFrameMaker():
     fakeLastNames = []
 
     for _ in range(100):
-        fakeFirstNames.append(fake.name())
-        fakeLastNames.append(fake.name())
+        fakeFirstNames.append(fake.first_name())
+        fakeLastNames.append(fake.last_name())
+
+    nameDict = {"First names": fakeFirstNames, "Last names": fakeLastNames}
+
+    jsonNameStuff = json.dumps(nameDict, indent=2)
+
+    Path("names.json").touch()
+
+    with open('names.json', 'w') as outfile:
+        outfile.write(jsonNameStuff)
+
+    #try:
+    #    Path("charts").mkdir()
+    #except FileExistsError:
+    #    pass
+
 
     fakerFrame = pd.DataFrame(
         {
@@ -31,4 +51,4 @@ def fakeFrameMaker():
     )
 fakeFrameMaker()
 
-print(fakerFrame)
+#print(fakerFrame)
