@@ -21,7 +21,7 @@ def fakeNameMaker():
 
     #generates a large number of names
 
-    for _ in range(100):
+    for _ in range(1000):
         fakeFirstNames.append(fake.first_name())
         fakeLastNames.append(fake.last_name())
 
@@ -39,15 +39,15 @@ def fakeNameMaker():
 #This takes the names out of the json file and throws them into a pandas frame.
 def fakePandasMaker():
 
+    global fakerFrame
+
     with open("names.json", 'r') as nameFile:
 
         fakeJsonNames = {}
 
         fakeJsonNames = json.load(nameFile)
 
-        print(fakeJsonNames)
-
-    fakerFrame = pd.DataFrame.from_dict(fakeJsonNames, orient="columns")
+        fakerFrame = pd.DataFrame.from_dict(fakeJsonNames, orient="columns")
 
 
 #This makes the charts.
@@ -59,8 +59,15 @@ def fakeNameChart():
     except FileExistsError:
         pass
 
+    #Count occurences of names in pandas dataframe.
+    firstNameCount = fakerFrame.groupby('first names')['first names'].count()
+    lastNameCount = fakerFrame.groupby('last names')['last names'].count()
+
+
+
 
 
 
 fakeNameMaker()
 fakePandasMaker()
+fakeNameChart()
