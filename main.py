@@ -9,26 +9,25 @@ import numpy as np
 import matplotlib as plt
 import pandas as pd
 import json
-import pprint
-
 
 
 fake = Faker()
 
 #Create the data frame that contains the first and last names.
-def fakeFrameMaker():
+def fakeNameMaker():
 
-    fake = Faker()
-
-    global fakerFrame
     fakeFirstNames = []
     fakeLastNames = []
+
+    #generates a large number of names
 
     for _ in range(100):
         fakeFirstNames.append(fake.first_name())
         fakeLastNames.append(fake.last_name())
 
-    nameDict = {"First names": fakeFirstNames, "Last names": fakeLastNames}
+    #Throw the names into a dictionary then a json file.
+
+    nameDict = {"first names": fakeFirstNames, "last names": fakeLastNames}
 
     jsonNameStuff = json.dumps(nameDict, indent=2)
 
@@ -37,18 +36,31 @@ def fakeFrameMaker():
     with open('names.json', 'w') as outfile:
         outfile.write(jsonNameStuff)
 
-    #try:
-    #    Path("charts").mkdir()
-    #except FileExistsError:
-    #    pass
+#This takes the names out of the json file and throws them into a pandas frame.
+def fakePandasMaker():
+
+    with open("names.json", 'r') as nameFile:
+
+        fakeJsonNames = {}
+
+        fakeJsonNames = json.load(nameFile)
+
+        print(fakeJsonNames)
+
+    fakerFrame = pd.DataFrame.from_dict(fakeJsonNames, orient="columns")
 
 
-    fakerFrame = pd.DataFrame(
-        {
-            "First Name": fakeFirstNames,
-            "Last Name": fakeLastNames
-        }
-    )
-fakeFrameMaker()
+#This makes the charts.
+def fakeNameChart():
 
-#print(fakerFrame)
+    #First, the charts directory is made.
+    try:
+        Path("charts").mkdir()
+    except FileExistsError:
+        pass
+
+
+
+
+fakeNameMaker()
+fakePandasMaker()
