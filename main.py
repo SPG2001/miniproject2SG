@@ -50,17 +50,16 @@ def fakePandasMaker():
 
         fakerFrame = pd.DataFrame.from_dict(fakeJsonNames, orient="columns")
 
-
-#This makes the charts.
+# This makes the charts.
 def fakeNameChart():
 
-    #First, the charts directory is made.
+    # First, the charts directory is made.
     try:
         Path("charts").mkdir()
     except FileExistsError:
         pass
 
-    # Count occurrences of names in pandas dataframe and sort them by the number occurrences.
+    # Count occurrences of names in pandas dataframe and sort them by the number occurrences
 
     firstNameCount = fakerFrame.groupby('first names')['first names'].count().sort_values(ascending=[1]).tail()
     lastNameCount = fakerFrame.groupby('last names')['last names'].count().sort_values(ascending=[1]).tail()

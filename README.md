@@ -20,4 +20,5 @@ pip install requirements.txt
 python main.py
 ```
 
-The program will run automatically and create a pair of bar graphs.
+The program will run automatically and create a pair of bar graphs, as well as save the json file with the names to your
+computer.
