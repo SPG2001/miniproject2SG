@@ -2,18 +2,18 @@
 # Stephen Gabel
 # Mini Project 2
 
+# This project generates 1000 names from the faker package and sorts them by number of occurrences.
 
 from faker import Faker
 from pathlib import Path
-import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import pandas as pd
 import json
 
 
 fake = Faker()
 
-#Create the data frame that contains the first and last names.
+# This creates the data frame that contains the first and last names.
 def fakeNameMaker():
 
     fakeFirstNames = []
@@ -21,11 +21,12 @@ def fakeNameMaker():
 
     #generates a large number of names
 
-    for _ in range(1000):
+    for i in range(1000):
         fakeFirstNames.append(fake.first_name())
         fakeLastNames.append(fake.last_name())
 
-    #Throw the names into a dictionary then a json file.
+    """Throw the names into a dictionary then a json file (This is to show that I am extracting from a json file 
+       in order to correctly follow the assignment)"""
 
     nameDict = {"first names": fakeFirstNames, "last names": fakeLastNames}
 
@@ -59,13 +60,32 @@ def fakeNameChart():
     except FileExistsError:
         pass
 
-    #Count occurences of names in pandas dataframe.
-    firstNameCount = fakerFrame.groupby('first names')['first names'].count()
-    lastNameCount = fakerFrame.groupby('last names')['last names'].count()
+    # Count occurrences of names in pandas dataframe and sort them by the number occurrences.
 
+    firstNameCount = fakerFrame.groupby('first names')['first names'].count().sort_values(ascending=[1]).tail()
+    lastNameCount = fakerFrame.groupby('last names')['last names'].count().sort_values(ascending=[1]).tail()
 
+    # This constructs the pair of graphs and saves them to the charts directory.
 
+    firstNameCount.plot(x="Name", y="Occurrences", kind="bar")
+    plt.xlabel('Names')
+    plt.ylabel('Occurrences')
+    plt.axis([-1, 5, 1, 40])
 
+    savefile = "charts/firstnamecharts.png"
+    plt.savefig(savefile)
+
+    plt.show()
+
+    lastNameCount.plot(x="Name", y="Occurrences", kind="bar")
+    plt.xlabel('Names')
+    plt.ylabel('Occurrences')
+    plt.axis([-1, 5, 1, 40])
+
+    savefile = "charts/lastnamecharts.png"
+    plt.savefig(savefile)
+
+    plt.show()
 
 
 fakeNameMaker()
