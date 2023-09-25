@@ -11,7 +11,7 @@ My hypothesis is that there will be some duplicate names used, however, it will 
 
 Please install the following packages:
 ```
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 ## How to run:
